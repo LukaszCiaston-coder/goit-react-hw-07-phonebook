@@ -4,7 +4,7 @@ import { deleteContact } from '../Features/ContactSlice';
 import styles from './ContactList.module.css';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 const ContactListItem = ({ contact, onDelete }) => {
   const [showModal, setShowModal] = useState(false);
