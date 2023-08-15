@@ -1,12 +1,11 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ContactForm from '../ContactForm/ContactForm';
 import ContactList from '../ContactList/ContactList';
 import Filter from '../Filter/Filter';
-import { addContact, deleteContact } from '../Features/ContactSlice';
+import { fetchContacts } from '../Features/ContactSlice';
 import { setFilter } from '../Features/FilterSlice';
-import '../App/App.css';
-import { nanoid } from '@reduxjs/toolkit';
+import './App.css';
 
 export const App = () => {
   const contacts = useSelector(state => state.contacts);
@@ -21,38 +20,18 @@ export const App = () => {
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const handleAddContact = newContact => {
-    const { name, number } = newContact;
-    const isContactExists = contacts.some(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
-    );
-    if (isContactExists) {
-      alert('This contact already exists!');
-      return;
-    }
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-    dispatch(addContact(contact));
-  };
-
-  const handleDeleteContact = contactId => {
-    dispatch(deleteContact(contactId));
-  };
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <div className="appContainer">
       <h1>Phonebook</h1>
-      <ContactForm onSubmit={handleAddContact} />
+      <ContactForm />
 
       <h2>Contacts</h2>
       <Filter value={filter} onChange={handleFilterChange} />
-      <ContactList
-        contacts={filteredContacts}
-        onDeleteContact={handleDeleteContact}
-      />
+      <ContactList contacts={filteredContacts} />
     </div>
   );
 };
